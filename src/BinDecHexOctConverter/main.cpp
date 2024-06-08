@@ -1,10 +1,3 @@
-/* 
- * File:   main.cpp
- * Author: RedSpiderMkV
- *
- * Created on 11 November 2015, 21:38
- */
-
 #include <iostream>
 #include <string>
 #include "Converter/ConverterBase.h"
@@ -13,50 +6,47 @@
 using namespace std;
 using namespace NumberBaseConverter;
 
-bool argumentCountValid(int argc)
-{
-    if(argc != 3)
-    {
-        cout << "Incorrect usage... should be:" << endl;
-        cout << "BinDecHexConverter 'base' NUMBER" << endl;
-        cout << "Example - converting binary 1010:" << endl;
-        cout << "BinDecHexConverter bin 1010" << endl << endl;
-        
+bool argumentCountValid(int argc) {
+    if (argc != 2) {
+        cout << "Usage:"        << endl;
+        cout << "   hdob NUMBER" << endl;
+        cout << "Example"       << endl;
+        cout << "   hdob 10"     << endl;
+        cout << "   hdob 0x10"   << endl;
+        cout << "   hdob 0c10"   << endl;
+        cout << "   hdob 0b10"   << endl << endl;
         return false;
-    } // end if
-    
-    return true;
-} // end method
+    }
 
-bool inputBaseValid(string inputBase)
-{
-    if(inputBase != "dec" && inputBase != "hex" && inputBase != "bin" && inputBase != "oct")
-    {
-        cout << "Specified input base is unrecognised: " << inputBase << endl;
-        cout << "Can be dec, hex, oct or bin" << endl << endl;
-        
-        return false;
-    } // end if
-    
     return true;
-} // end method
+}
 
-int main(int argc, char* argv[])
-{
-    if(!argumentCountValid(argc) || !inputBaseValid(string(argv[1])))
-    {
-        cout << "Conversion failed, exiting" << endl;
-        
+int main(int argc, char* argv[]) {
+    if (!argumentCountValid(argc)) {
         return -1;
-    } // end if
-    
-    NumberBaseConverterFactory converterFactory;
-    ConverterBase *converter = converterFactory.GetConverter(string(argv[1]));
-    
-    cout << "Dec\t" << converter->ConvertToDecimal(string(argv[2])) << endl;
-    cout << "Hex\t" << converter->ConvertToHexadecimal(string(argv[2])) << endl;
-    cout << "Bin\t" << converter->ConvertToBinary(string(argv[2])) << endl;
-    cout << "Oct\t" << converter->ConvertToOctal(string(argv[2])) << endl;
-    
+    }
+
+    // Get base based on input number
+    // Ref: https://stackoverflow.com/questions/8454228/how-can-i-get-the-nth-character-of-a-string
+    std::string strBase = "dec";
+    std::string strInpt = string(argv[1]);
+    if (strInpt.length() > 1) {
+        if (strInpt[1] == 'x') {
+            strBase = "hex";
+        } else if (strInpt[1] == 'o') {
+            strBase = "oct";
+        } else if (strInpt[1] == 'b') {
+            strBase = "bin";
+        }
+    }
+
+    NumberBaseConverterFactory cConverterFactory;
+    ConverterBase* cpConverter = cConverterFactory.GetConverter(strBase);
+
+    if (strBase != "dec") cout << "Dec(0d)\t" << cpConverter->ConvertToDecimal(strInpt)     << endl;
+    if (strBase != "hex") cout << "Hex(0x)\t" << cpConverter->ConvertToHexadecimal(strInpt) << endl;
+    if (strBase != "bin") cout << "Bin(0b)\t" << cpConverter->ConvertToBinary(strInpt)      << endl;
+    if (strBase != "oct") cout << "Oct(0o)\t" << cpConverter->ConvertToOctal(strInpt)       << endl;
+
     return 0;
-} // end method
+}
