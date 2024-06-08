@@ -15,7 +15,7 @@ cd BinDecHexConverter
 make
 ```
 
-or specify the file, selfMakefile as the input to the make command.
+or specify the file, selfMakefile as the input to the make command (this way is currently used)
 
 ```
 make -f selfMakefile
