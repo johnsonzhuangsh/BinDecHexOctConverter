@@ -9,12 +9,10 @@ using namespace NumberBaseConverter;
 bool argumentCountValid(int argc) {
     if (argc != 2) {
         cout << "Usage:"        << endl;
-        cout << "   hdob NUMBER" << endl;
+        cout << "   hdc NUMBER" << endl;
         cout << "Example"       << endl;
-        cout << "   hdob 10"     << endl;
-        cout << "   hdob 0x10"   << endl;
-        cout << "   hdob 0c10"   << endl;
-        cout << "   hdob 0b10"   << endl << endl;
+        cout << "   hdc 10"     << endl;
+        cout << "   hdc 0x10"   << endl << endl;
         return false;
     }
 
@@ -33,20 +31,14 @@ int main(int argc, char* argv[]) {
     if (strInpt.length() > 1) {
         if (strInpt[1] == 'x') {
             strBase = "hex";
-        } else if (strInpt[1] == 'o') {
-            strBase = "oct";
-        } else if (strInpt[1] == 'b') {
-            strBase = "bin";
         }
     }
 
     NumberBaseConverterFactory cConverterFactory;
     ConverterBase* cpConverter = cConverterFactory.GetConverter(strBase);
 
-    if (strBase != "dec") cout << "Dec(0d)\t" << cpConverter->ConvertToDecimal(strInpt)     << endl;
-    if (strBase != "hex") cout << "Hex(0x)\t" << cpConverter->ConvertToHexadecimal(strInpt) << endl;
-    if (strBase != "bin") cout << "Bin(0b)\t" << cpConverter->ConvertToBinary(strInpt)      << endl;
-    if (strBase != "oct") cout << "Oct(0o)\t" << cpConverter->ConvertToOctal(strInpt)       << endl;
+    if (strBase != "hex") cout << "0x" << cpConverter->ConvertToHexadecimal(strInpt) << endl;
+    if (strBase != "dec") cout         << cpConverter->ConvertToDecimal(strInpt)     << endl;
 
     return 0;
 }
